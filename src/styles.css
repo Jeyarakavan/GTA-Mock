@@ -45,6 +45,109 @@ body,
   overflow: hidden;
 }
 
+/* Touch input is drawn above the canvas but stays hidden for desktop play. */
+.touch-controls {
+  display: none;
+}
+
+@media (pointer: coarse), (max-width: 900px) {
+  .touch-controls {
+    position: absolute;
+    inset: 0;
+    display: block;
+    z-index: 20;
+    pointer-events: none;
+    touch-action: none;
+  }
+
+  .touch-look-pad {
+    position: absolute;
+    inset: 18% 0 0 42%;
+    pointer-events: auto;
+  }
+
+  .touch-joystick {
+    position: absolute;
+    left: max(18px, env(safe-area-inset-left));
+    bottom: max(24px, env(safe-area-inset-bottom));
+    width: 132px;
+    height: 132px;
+    pointer-events: auto;
+    touch-action: none;
+  }
+
+  .touch-joystick-ring,
+  .touch-joystick-knob {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .touch-joystick-ring {
+    inset: 0;
+    border: 2px solid rgba(46, 230, 200, 0.55);
+    background: rgba(16, 21, 31, 0.48);
+  }
+
+  .touch-joystick-knob {
+    width: 50px;
+    height: 50px;
+    left: 41px;
+    top: 41px;
+    background: rgba(46, 230, 200, 0.8);
+    border: 2px solid var(--text);
+    box-shadow: 0 0 18px rgba(46, 230, 200, 0.4);
+  }
+
+  .touch-actions {
+    position: absolute;
+    right: max(18px, env(safe-area-inset-right));
+    bottom: max(24px, env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-columns: repeat(2, 76px);
+    gap: 10px;
+    pointer-events: auto;
+  }
+
+  .touch-menu-actions {
+    position: absolute;
+    top: max(14px, env(safe-area-inset-top));
+    right: max(14px, env(safe-area-inset-right));
+    display: flex;
+    gap: 7px;
+    pointer-events: auto;
+  }
+
+  .touch-button {
+    min-width: 68px;
+    min-height: 48px;
+    padding: 8px 10px;
+    color: var(--text);
+    background: rgba(16, 21, 31, 0.78);
+    border: 1px solid rgba(120, 190, 210, 0.45);
+    border-radius: 8px;
+    font: 700 10px var(--mono);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .touch-button:active {
+    background: var(--teal);
+    color: var(--bg);
+  }
+
+  .touch-sprint { border-color: var(--amber); }
+  .touch-jump { border-color: var(--pink); }
+  .touch-interact { border-color: var(--teal); }
+  .touch-recover { border-color: var(--orange); }
+
+  .help-hint { display: none; }
+  .bottom-left { bottom: 176px; }
+  .bottom-right { bottom: 176px; }
+  .prompt { bottom: 178px; max-width: 48vw; white-space: normal; text-align: center; }
+}
+
 .canvas-wrapper {
   position: absolute;
   inset: 0;

@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Neon District: Street Run",
+    "slug": "neon-district-street-run",
+    "version": "0.1.0",
+    "orientation": "landscape",
+    "userInterfaceStyle": "dark",
+    "scheme": "neon-district",
+    "android": {
+      "package": "com.habbglobal.neondistrict",
+      "versionCode": 1
+    },
+    "plugins": ["expo-av"]
+  }
+}

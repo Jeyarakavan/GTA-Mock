@@ -16,6 +16,8 @@ export interface InputState {
   mouseDX: number;
   mouseDY: number;
   pointerLocked: boolean;
+  /** True while the mobile right-side look gesture is active. */
+  touchLooking: boolean;
 }
 
 const state: InputState = {
@@ -26,6 +28,7 @@ const state: InputState = {
   mouseDX: 0,
   mouseDY: 0,
   pointerLocked: false,
+  touchLooking: false,
 };
 
 const held = new Set<string>();
@@ -92,11 +95,39 @@ function onMouseMove(e: MouseEvent) {
   state.mouseDY += e.movementY;
 }
 
+/** Feed the same frame-polled input snapshot from a touch joystick. */
+export function setTouchMovement(forward: number, strafe: number) {
+  state.forward = Math.max(-1, Math.min(1, forward));
+  state.strafe = Math.max(-1, Math.min(1, strafe));
+}
+
+export function setTouchSprint(active: boolean) {
+  state.sprint = active;
+}
+
+export function setTouchJump(active: boolean) {
+  state.jump = active;
+}
+
+/** Accumulate a right-side drag as camera-ready delta units. */
+export function moveTouchLook(dx: number, dy: number) {
+  state.touchLooking = true;
+  state.mouseDX += dx;
+  state.mouseDY += dy;
+}
+
+export function endTouchLook() {
+  state.touchLooking = false;
+}
+
 /** Any focus loss must release every key, or movement sticks on. */
 function clearHeld() {
   held.clear();
   state.mouseDX = 0;
   state.mouseDY = 0;
+  state.touchLooking = false;
+  state.sprint = false;
+  state.jump = false;
   recompute();
 }
 

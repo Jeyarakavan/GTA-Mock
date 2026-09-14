@@ -63,7 +63,7 @@ export function CameraRig({
 
     // Mouse look — always drained so deltas never accumulate while paused.
     consumeMouse(tmp.mouse);
-    if (!paused && getInput().pointerLocked) {
+    if (!paused && (getInput().pointerLocked || getInput().touchLooking)) {
       yawRef.current -= tmp.mouse.x * CAMERA.mouseSensitivity;
       pitchRef.current = Math.max(
         CAMERA.minPitch,

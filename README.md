@@ -33,6 +33,26 @@ node scripts/verify.mjs   # end-to-end gameplay checks in a real browser
 through `playwright-core` (it uses your installed Chrome — nothing is
 downloaded).
 
+## Mobile conversion
+
+The React Native/Expo project lives entirely inside [`mobile/`](mobile/). It
+uses a native OpenGL surface (`expo-gl` + `expo-three`), native touch controls,
+landscape orientation, lifecycle pause handling, and AsyncStorage persistence.
+It is not a WebView wrapper. Install and run it from the repository root with:
+
+```bash
+cd mobile
+npm install
+npx expo run:android
+```
+
+The native project keeps the seeded city generator available to the native
+renderer and keeps input and UI platform-specific. The browser build remains
+the complete gameplay reference while the native Rapier adapter is validated.
+See [`docs/MOBILE_ARCHITECTURE.md`](docs/MOBILE_ARCHITECTURE.md) for decisions
+and [`docs/MOBILE_TEST_REPORT.md`](docs/MOBILE_TEST_REPORT.md) for the Android
+evidence checklist.
+
 ## Controls
 
 | Input  | Action                                     |
@@ -49,6 +69,11 @@ downloaded).
 
 Click the canvas to capture the mouse. Pausing releases it; if the pointer is
 released unexpectedly the game pauses cleanly rather than half-listening.
+
+On a phone or tablet, the browser build exposes a virtual joystick, right-side
+camera drag, sprint, jump/brake, interaction, recovery, map, help, and pause
+controls. These feed the same mutable input snapshot as keyboard play, so the
+simulation does not receive per-frame React state updates.
 
 ## The first minute
 
@@ -187,6 +212,10 @@ Screenshots from the run are in `verify-shots/`.
   right-of-way rules, so occasional bumping happens.
 - **The JS bundle is ~3.4 MB (1.17 MB gzipped)**, dominated by Three.js and the
   Rapier WASM. It is not code-split.
-- **Desktop keyboard and mouse only.** There are no touch controls.
+- **Native parity is still being validated.** The web build has touch controls;
+  the native project has the city renderer and control shell, while native
+  Rapier gameplay integration and Android device evidence remain pending. See
+  the mobile architecture and test report rather than treating the scaffold as
+  a completed Android acceptance run.
 - **No postprocessing.** Bloom was left out deliberately in favour of a stable
   frame rate and a readable image.
