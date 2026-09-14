@@ -4,6 +4,7 @@ import { Hud } from './ui/Hud';
 import { StartMenu, PauseMenu, MapOverlay } from './ui/Menus';
 import { useGame } from './game/store';
 import { audio } from './game/audio';
+import { TouchControls } from './ui/TouchControls';
 import {
   consumePress,
   onPointerLockChanged,
@@ -101,6 +102,7 @@ export default function App() {
     <div className="app">
       <GameCanvas />
       <Hud />
+      <TouchControls />
       <MapOverlay />
       <PauseMenu />
       <StartMenu />

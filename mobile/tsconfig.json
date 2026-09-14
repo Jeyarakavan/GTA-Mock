@@ -1,0 +1,9 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true,
+    "allowJs": false
+  },
+  "include": ["**/*.ts", "**/*.tsx", "../src/game/world.ts", "../src/game/config.ts", "../src/game/types.ts"]
+}

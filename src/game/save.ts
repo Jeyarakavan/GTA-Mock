@@ -1,6 +1,28 @@
 import { SAVE_KEY, SAVE_VERSION } from './config';
 import type { MissionId, Quality } from './types';
 
+export interface SaveStorage {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+}
+
+let storageOverride: SaveStorage | null = null;
+
+/** Native hosts can inject AsyncStorage through a small synchronous cache. */
+export function setSaveStorage(storage: SaveStorage | null) {
+  storageOverride = storage;
+}
+
+function getStorage(): SaveStorage | null {
+  if (storageOverride) return storageOverride;
+  try {
+    return typeof localStorage === 'undefined' ? null : localStorage;
+  } catch {
+    return null;
+  }
+}
+
 export interface SaveData {
   version: number;
   cash: number;
@@ -68,7 +90,7 @@ export function validateSave(raw: unknown): SaveData | null {
 
 export function loadSave(): SaveData | null {
   try {
-    const text = localStorage.getItem(SAVE_KEY);
+    const text = getStorage()?.getItem(SAVE_KEY);
     if (!text) return null;
     return validateSave(JSON.parse(text));
   } catch {
@@ -78,7 +100,7 @@ export function loadSave(): SaveData | null {
 
 export function writeSave(data: SaveData): boolean {
   try {
-    localStorage.setItem(
+    getStorage()?.setItem(
       SAVE_KEY,
       JSON.stringify({ ...data, version: SAVE_VERSION, savedAt: Date.now() }),
     );
@@ -91,7 +113,7 @@ export function writeSave(data: SaveData): boolean {
 
 export function clearSave(): void {
   try {
-    localStorage.removeItem(SAVE_KEY);
+    getStorage()?.removeItem(SAVE_KEY);
   } catch {
     /* ignore */
   }
