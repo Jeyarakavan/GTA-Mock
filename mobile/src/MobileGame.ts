@@ -9,6 +9,7 @@ export interface MobileInput {
   strafe: number;
   sprint: boolean;
   jump: boolean;
+  handbrake: boolean;
   lookDX: number;
   lookDY: number;
 }
@@ -83,7 +84,7 @@ export class MobileGameController {
       vehicle.speed += input.forward * spec.engineForce / spec.mass * dt;
       vehicle.speed *= Math.pow(0.985, dt * 60);
       vehicle.speed = clamp(vehicle.speed, -spec.maxReverseSpeed, spec.maxSpeed);
-      if (input.jump) vehicle.speed *= Math.pow(0.78, dt * 60);
+      if (input.handbrake) vehicle.speed *= Math.pow(0.78, dt * 60);
       vehicle.yaw -= input.strafe * (0.9 + Math.min(1, Math.abs(vehicle.speed) / 12)) * dt;
       vehicle.position.x += Math.sin(vehicle.yaw) * vehicle.speed * dt;
       vehicle.position.z += Math.cos(vehicle.yaw) * vehicle.speed * dt;
