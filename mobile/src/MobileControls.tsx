@@ -6,6 +6,7 @@ export interface MobileInput {
   strafe: number;
   sprint: boolean;
   jump: boolean;
+  handbrake: boolean;
   lookDX: number;
   lookDY: number;
 }
@@ -81,6 +82,13 @@ export function MobileControls({ input, onInteract, onRecover, onMap, onPause, o
         <Pressable style={[styles.button, styles.recover]} onPress={onRecover}>
           <Text style={styles.buttonText}>Recover</Text>
         </Pressable>
+        <Pressable
+          style={[styles.button, styles.handbrake]}
+          onPressIn={() => { input.current.handbrake = true; }}
+          onPressOut={() => { input.current.handbrake = false; }}
+        >
+          <Text style={styles.buttonText}>Handbrake</Text>
+        </Pressable>
       </View>
       <Pressable style={styles.pause} onPress={onPause}>
         <Text style={styles.buttonText}>Pause</Text>
@@ -107,6 +115,7 @@ const styles = StyleSheet.create({
   jump: { borderColor: '#ff5fa2' },
   interact: { borderColor: '#2ee6c8' },
   recover: { borderColor: '#ff9d4d' },
+  handbrake: { borderColor: '#ff4d4d' },
   pause: { position: 'absolute', top: 20, right: 20, minWidth: 76, minHeight: 48, borderRadius: 8, backgroundColor: 'rgba(16,21,31,0.82)', borderWidth: 1, borderColor: '#9fb0c0', justifyContent: 'center', alignItems: 'center' },
   help: { position: 'absolute', top: 20, right: 108, minWidth: 76, minHeight: 48, borderRadius: 8, backgroundColor: 'rgba(16,21,31,0.82)', borderWidth: 1, borderColor: '#9fb0c0', justifyContent: 'center', alignItems: 'center' },
   map: { position: 'absolute', top: 20, right: 196, minWidth: 76, minHeight: 48, borderRadius: 8, backgroundColor: 'rgba(16,21,31,0.82)', borderWidth: 1, borderColor: '#9fb0c0', justifyContent: 'center', alignItems: 'center' },
