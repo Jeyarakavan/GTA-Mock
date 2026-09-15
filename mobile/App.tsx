@@ -15,7 +15,7 @@ export default function App() {
   const [cash, setCash] = useState(0);
   const [telemetry, setTelemetry] = useState<MobileTelemetry | null>(null);
   const controller = useRef(new MobileGameController());
-  const input = useRef<MobileInput>({ forward: 0, strafe: 0, sprint: false, jump: false, lookDX: 0, lookDY: 0 });
+  const input = useRef<MobileInput>({ forward: 0, strafe: 0, sprint: false, jump: false, handbrake: false, lookDX: 0, lookDY: 0 });
   const cashRef = useRef(cash);
   cashRef.current = cash;
 
@@ -23,8 +23,8 @@ export default function App() {
     AsyncStorage.getItem(SAVE_KEY).then((value) => {
       if (!value) return;
       try {
-        const save = JSON.parse(value) as { cash?: number; completedMissions?: never[]; resume?: { x: number; z: number } | null };
-        controller.current.loadSave(Number(save.cash) || 0, [], save.resume ?? null);
+        const save = JSON.parse(value) as { cash?: number; completedMissions?: string[]; resume?: { x: number; z: number } | null };
+        controller.current.loadSave(Number(save.cash) || 0, (save.completedMissions ?? []) as never[], save.resume ?? null);
         setCash(controller.current.cash);
       } catch { /* corrupted native save is ignored */ }
     });
@@ -34,6 +34,7 @@ export default function App() {
         input.current.strafe = 0;
         input.current.sprint = false;
         input.current.jump = false;
+        input.current.handbrake = false;
         setPaused(true);
         void AsyncStorage.setItem(SAVE_KEY, JSON.stringify({ version: 1, ...controller.current.getSave() }));
       }
