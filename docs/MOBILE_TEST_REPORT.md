@@ -16,3 +16,16 @@ Status: native gameplay, touch controls, persistence, Android bundling, and nati
 | 10-15 minute stability run | Pending | Device model, OS, average FPS, crashes |
 
 Do not mark pending rows complete without running them on Android.
+
+## Fixes applied on `fix/mobile-save-and-handbrake`
+
+- Save/continue previously discarded completed missions on reload (`App.tsx` passed `[]`
+  instead of the persisted `completedMissions` array to `loadSave`). Fixed to restore the
+  saved mission progress.
+- Vehicle braking previously reused the on-foot `jump` button while driving, which is not
+  a distinct control as required by the task's control table. Added a dedicated
+  `handbrake` field to `MobileInput` and a separate on-screen Handbrake button; `jump`
+  now only affects on-foot movement.
+
+These are code-level fixes only. The device-validation rows above are still pending real
+Android hardware testing.
